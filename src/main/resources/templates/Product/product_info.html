@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Info Product</title>
+    <link th:fragment="header-css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:fragment="footer-js" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body class="bg-light">
+<div th:replace="~{commonNavBar :: main-navbar}"></div>
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+
+    <div class="bg-dark card shadow-sm" style="width: 100%; max-width: 400px;">
+        <div class="card-body p-4">
+            <h3 class="card-title text-center mb-4 text-success">Product Information</h3>
+
+            <form th:object="${product}">
+                <div class="mb-3">
+                    <label for="id" class="fs-5 form-label text-light" >ID: </label>
+                    <input type="text" class="form-control" id="id" th:field="*{id}" readonly >
+                </div>
+
+                <div class="mb-3">
+                    <label for="name" class="fs-5 form-label text-light" >Name: </label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" readonly >
+                </div>
+
+                <div class="mb-3">
+                    <label for="supplier" class="fs-5 form-label text-light" >Supplier: </label>
+                    <input type="text" class="form-control" id="supplier" readonly th:field="*{supplier}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="fs-5 form-label text-light" >Price: </label>
+                    <input type="number" class="form-control" id="price" readonly th:field="*{price}">
+                </div>
+
+                <div class="card-body text-center">
+                    <a th:href="@{/product/read}" class="btn btn-light">GO BACK</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

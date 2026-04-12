@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Read Orders</title>
+    <link th:fragment="header-css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:fragment="footer-js" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+<div th:replace="~{commonNavBar :: main-navbar}"></div>
+<div class="p-5 bg-light">
+<table class="table">
+    <thead class="table-dark">
+    <tr class="m-5">
+        <th>ID</th>
+        <th>Order</th>
+        <th>Product</th>
+        <th>City</th>
+        <th>Date Of Order</th>
+        <th>Status</th>
+        <th colspan="3" class="text-center">FUNCTIONS</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${Orders}">
+        <td th:text="${order.id}"></td>
+
+        <td th:text="${order.customerDTO?.id} + ' - ' + ${order.customerDTO?.name}"></td>
+
+        <td th:text="${order.productDTO?.id} + ' - ' + ${order.productDTO?.name} + ' - ' + ${order.productDTO?.price}"></td>
+
+        <td th:text="${order.city}"></td>
+        <td th:text="${order.orderDate}"></td>
+        <td th:text="${order.deliveryStatus}"></td>
+
+        <td colspan="3" class="text-center">
+            <div>
+                <a class="btn btn-danger btn-sm mx-1" th:href="@{/order/delete/{id}(id=${order.id})}">DELETE</a>
+                <a class="btn btn-primary btn-sm mx-1" th:href="@{/order/update/{id}(id=${order.id})}">UPDATE</a>
+                <a class="btn btn-success btn-sm mx-1" th:href="@{/order/info/{id}(id=${order.id})}">INFO</a>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

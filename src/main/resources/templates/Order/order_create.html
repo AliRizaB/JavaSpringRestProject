@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Order</title>
+    <link th:fragment="header-css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:fragment="footer-js" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body class="bg-light">
+    <div th:replace="~{commonNavBar :: main-navbar}"></div>
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+
+        <div class="bg-dark card shadow-sm" style="width: 100%; max-width: 400px;">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center mb-4 text-light">Create Order</h3>
+
+                <form method="POST" th:action="@{/order/create}" th:object="${order}">
+                    <div th:if="${#fields.hasAnyErrors()}">
+                        <p class="text-danger fs-6">Please fix the errors: </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="city" class="fs-5 form-label text-light" >City: </label>
+                        <input type="text" class="form-control" id="city" th:field="*{city}" placeholder="City Name..." required>
+                        <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="deliveryStat" class="fs-5 form-label text-light" >Delivery Status: </label>
+                        <select class="form-select" th:field="*{deliveryStatus}" required id="deliveryStat">
+                            <option value="" selected >Select a status...</option>
+                            <option th:each="stats :  ${deliveryStatus}" th:value="${stats}" th:text="${stats}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="orderDate" class="fs-5 form-label text-light" >Order Date: </label>
+                        <input type="date" class="form-control" id="orderDate" th:field="*{orderDate}" required>
+                        <span th:if="${#fields.hasErrors('orderDate')}" th:errors="*{orderDate}" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="customerSelect" class="fs-5 form-label text-light" >Select Customer: </label>
+                        <select class="form-select" th:field="*{customer}" required id="customerSelect">
+                            <option value=""  selected >Select a customer...</option>
+                            <option th:each="customer :  ${customers}" th:value="${customer.id}" th:text="|${customer.id} -- ${customer.name}|"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="productSelect" class="fs-5 form-label text-light" >Select Product: </label>
+                        <select class="form-select" th:field="*{product}" required id="productSelect">
+                            <option value="" selected >Select a product...</option>
+                            <option th:each="product :  ${products}" th:value="${product.id}" th:text="|${product.id} -- ${product.name} -- ${product.price}|"></option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">CREATE</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

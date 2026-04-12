@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Product</title>
+    <link th:fragment="header-css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:fragment="footer-js" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body class="bg-light">
+    <div th:replace="~{commonNavBar :: main-navbar}"></div>
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+
+        <div class="bg-dark card shadow-sm" style="width: 100%; max-width: 400px;">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center mb-4 text-light">Create Product</h3>
+
+
+
+                <form method="POST" th:action="@{/product/create}" th:object="${product}">
+                    <div th:if="${#fields.hasAnyErrors()}">
+                        <p class="text-danger fs-6">Please fix the errors: </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="fs-5 form-label text-light" >Name: </label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Product Name...">
+                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="supplier" class="fs-5 form-label text-light" >Supplier: </label>
+                        <input type="text" class="form-control" id="supplier" th:field="*{supplier}" placeholder="Supplier...">
+                        <span th:if="${#fields.hasErrors('supplier')}" th:errors="*{supplier}" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="price" class="fs-5 form-label text-light" >Price: </label>
+                        <input type="number" class="form-control" step="any" id="price" th:field="*{price}" placeholder="Price...">
+                        <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">CREATE</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

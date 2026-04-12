@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Read Products</title>
+    <link th:fragment="header-css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:fragment="footer-js" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+<div th:replace="~{commonNavBar :: main-navbar}"></div>
+<div class="p-5 bg-light">
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th style="width: 5%">ID</th>
+            <th style="width: 20%">Name</th>
+            <th style="width: 30%">Supplier</th>
+            <th style="width: 20%">Price</th>
+            <th style="width: 25%" class="text-center">FUNCTIONS</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${Products}">
+            <td th:text="${product.id}">1</td>
+            <td th:text="${product.name}">NamePlaceHolder</td>
+            <td th:text="${product.supplier}">AddressPlaceHolder</td>
+            <td th:text="${product.price}">TelPlaceHolder</td>
+
+            <td class="text-center">
+                <a class="btn btn-danger btn-sm mx-1 " th:href="@{/product/delete/{id}(id=${product.id})}"> DELETE </a>
+                <a class="btn btn-primary btn-sm mx-1" th:href="@{/product/update/{id}(id=${product.id})}"> UPDATE </a>
+                <a class="btn btn-success btn-sm mx-1" th:href="@{/product/info/{id}(id=${product.id})}"> INFO </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

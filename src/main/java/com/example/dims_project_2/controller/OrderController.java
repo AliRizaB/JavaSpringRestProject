@@ -145,7 +145,7 @@ public class OrderController {
         return Map.of(
                 "customers", customerService.getAllCustomers(),
                 "products", productService.getAllProducts(),
-                "deliveryStatus", List.of("PENDING", "SHIPPED", "DELIVERED", "CANCELLED")
+                "allStats", List.of("PENDING", "SHIPPED", "DELIVERED", "CANCELLED")
         );
     }
 }

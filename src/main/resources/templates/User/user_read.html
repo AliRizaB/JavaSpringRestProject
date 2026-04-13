@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -19,7 +19,7 @@
             <th style="width: 30%">Address</th>
             <th style="width: 20%">Username</th>
 
-            <th class="text-center" style="width: 25%">FUNCTIONS</th>
+            <th sec:authorize="hasRole('ADMIN')" class="text-center" style="width: 25%">FUNCTIONS</th>
         </tr>
         </thead>
         <tbody>
@@ -35,7 +35,7 @@
             <td class="text-truncate" th:text="${user.address}"></td>
             <td class="text-truncate" th:text="${user.username}"></td>
 
-            <td class="text-center">
+            <td sec:authorize="hasRole('ADMIN')" class="text-center">
                 <div class="d-flex justify-content-center gap-2">
                     <a class="btn btn-danger btn-sm" th:href="@{/user/delete/{id}(id=${user.id})}">DELETE</a>
                     <a class="btn btn-primary btn-sm" th:href="@{/user/edit/{id}(id=${user.id})}">UPDATE</a>

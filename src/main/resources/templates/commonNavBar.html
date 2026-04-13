@@ -46,32 +46,22 @@
                         User
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/user/create">Create</a></li>
-                        <li><a class="dropdown-item" href="/user/read">Read</a></li>
+                        <li><a class="dropdown-item" href="/user/create">Register</a></li>
+
+                        <li><a class="dropdown-item" href="/user/read" sec:authorize="isAuthenticated()">Read</a></li>
+
+                        <li><a class="dropdown-item" href="/Login/login">Login</a></li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="dropdown-item bg-danger">Logout</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
 
 
-                <div class="fw-bold text-white" sec:authorize="isAnonymous()"><a
-                        class="nav-link dropdown-toggle fw-bold text-white" href="/Login/login">Login</a></div>
                 <div class="fw-bold text-white" sec:authorize="isAuthenticated()">
-
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button"
-                           data-bs-toggle="dropdown">
-                            Welcome: <span sec:authentication="name">Username</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <form th:action="@{/logout}" method="post">
-                                    <button type="submit">Logout</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+                    Welcome: <span sec:authentication="name">Username</span>
                 </div>
-
-            </div>
-        </div>
     </nav>
 </div>

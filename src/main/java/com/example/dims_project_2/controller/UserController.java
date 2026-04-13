@@ -74,7 +74,8 @@ public class UserController {
             System.out.println("USER SAVED SUCCESSFULLY: " + user.getUsername());
         } catch (Exception e) {
             System.out.println("CRITICAL SAVE ERROR: " + e.getMessage());
-            e.printStackTrace();
+            result.rejectValue("username", "error.user", "User already exists with this username");
+            return "User/user_create";
         }
         return "redirect:/login";
     }

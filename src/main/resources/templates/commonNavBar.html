@@ -1,44 +1,74 @@
-<div xmlns:th="http://www.thymeleaf.org">
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <link th:fragment="header-css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <script th:fragment="footer-js" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<nav th:fragment="main-navbar" class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-    <div class="container-fluid">
-        <div class="navbar-nav w-100 justify-content-evenly">
+    <nav th:fragment="main-navbar" class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+        <div class="container-fluid">
+            <div class="navbar-nav w-100 justify-content-evenly">
 
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button" data-bs-toggle="dropdown">
-                    Customer
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/customer/create">Create</a></li>
-                    <li><a class="dropdown-item" href="/customer/read">Read</a></li>
-                </ul>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button"
+                       data-bs-toggle="dropdown">
+                        Customer
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/customer/create">Create</a></li>
+                        <li><a class="dropdown-item" href="/customer/read">Read</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button"
+                       data-bs-toggle="dropdown">
+                        Product
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/product/create">Create</a></li>
+                        <li><a class="dropdown-item" href="/product/read">Read</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button"
+                       data-bs-toggle="dropdown">
+                        Order
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/order/create">Create</a></li>
+                        <li><a class="dropdown-item" href="/order/read">Read</a></li>
+                    </ul>
+                </div>
+
+
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button"
+                       data-bs-toggle="dropdown">
+                        User
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/user/create">Create</a></li>
+                        <li><a class="dropdown-item" href="/user/read">Read</a></li>
+                    </ul>
+                </div>
+
+
+                <div class="fw-bold text-white" sec:authorize="isAnonymous()"><a class="dropdown-item" href="/Login/login">Login</a></div>
+                <div class="fw-bold text-white" sec:authorize="isAuthenticated()">
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button"
+                           data-bs-toggle="dropdown">
+                            Welcome: <span sec:authentication="name">Username</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><form th:action="@{/logout}" method="post">
+                                <button type="submit">Logout</button>
+                            </form></li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
-
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button" data-bs-toggle="dropdown">
-                    Product
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/product/create">Create</a></li>
-                    <li><a class="dropdown-item" href="/product/read">Read</a></li>
-                </ul>
-            </div>
-
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button" data-bs-toggle="dropdown">
-                    Order
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/order/create">Create</a></li>
-                    <li><a class="dropdown-item" href="/order/read">Read</a></li>
-                </ul>
-            </div>
-
         </div>
-    </div>
-</nav>
-
-
+    </nav>
 </div>

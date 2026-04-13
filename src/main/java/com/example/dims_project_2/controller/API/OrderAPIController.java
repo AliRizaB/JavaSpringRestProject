@@ -1,15 +1,13 @@
-package com.example.dims_project_2.controller;
+package com.example.dims_project_2.controller.API;
 
 import com.example.dims_project_2.dtos.OrderDTO;
 import com.example.dims_project_2.model.Order;
 import com.example.dims_project_2.service.OrderService;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/order")

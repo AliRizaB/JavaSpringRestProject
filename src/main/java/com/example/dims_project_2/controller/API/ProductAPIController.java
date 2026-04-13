@@ -1,4 +1,4 @@
-package com.example.dims_project_2.controller;
+package com.example.dims_project_2.controller.API;
 
 import com.example.dims_project_2.dtos.ProductDTO;
 import com.example.dims_project_2.model.Product;

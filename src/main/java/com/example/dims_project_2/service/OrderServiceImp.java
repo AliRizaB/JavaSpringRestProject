@@ -38,10 +38,10 @@ public class OrderServiceImp implements OrderService{
         OrderDTO orderDTO = new OrderDTO(order.getId(), order.getCity(), order.getDeliveryStatus(), order.getOrderDate());
 
         CustomerDTO customerDTO = new CustomerDTO(order.getCustomer().getId(), order.getCustomer().getName(), order.getCustomer().getAddress(), order.getCustomer().getTelephone());
-        orderDTO.setCustomerDTO(customerDTO);
+        orderDTO.setCustomer(customerDTO);
 
         ProductDTO productDTO = new ProductDTO(order.getProduct().getId(), order.getProduct().getName(), order.getProduct().getSupplier(), order.getProduct().getPrice());
-        orderDTO.setProductDTO(productDTO);
+        orderDTO.setProduct(productDTO);
 
         return  orderDTO;
     }

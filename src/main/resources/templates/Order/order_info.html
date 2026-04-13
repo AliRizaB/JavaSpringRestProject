@@ -34,12 +34,12 @@
 
                 <div class="mb-3">
                     <label for="customerSelect" class="fs-5 form-label text-light" >Select Customer: </label>
-                    <input type="text" class="form-control" id="customerSelect" th:value="|${order.customerDTO.id} - ${order.customerDTO.name}|" readonly>
+                    <input type="text" class="form-control" id="customerSelect" th:value="|${order.customer.id} - ${order.customer.name}|" readonly>
                 </div>
 
                 <div class="mb-3">
                     <label for="productSelect" class="fs-5 form-label text-light" >Select Product: </label>
-                    <input type="text" class="form-control" id="productSelect" th:value="|${order.productDTO.id} - ${order.productDTO.name} - ${order.productDTO.price}|" readonly>
+                    <input type="text" class="form-control" id="productSelect" th:value="|${order.product.id} - ${order.product.name} - ${order.product.price}|" readonly>
                 </div>
 
                 <div class="card-body text-center">

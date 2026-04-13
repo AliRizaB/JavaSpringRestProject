@@ -50,7 +50,7 @@
 
                         <li><a class="dropdown-item" href="/user/read" sec:authorize="isAuthenticated()">Read</a></li>
 
-                        <li><a class="dropdown-item" href="/Login/login">Login</a></li>
+                        <li><a sec:authorize="isAnonymous()" class="dropdown-item" href="/Login/login">Login</a></li>
                         <li sec:authorize="isAuthenticated()">
                             <form th:action="@{/logout}" method="post">
                                 <button type="submit" class="dropdown-item bg-danger">Logout</button>

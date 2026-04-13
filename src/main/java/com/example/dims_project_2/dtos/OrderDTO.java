@@ -14,8 +14,8 @@ public class OrderDTO {
     private String city;
     private String deliveryStatus;
     private LocalDate orderDate;
-    public CustomerDTO customerDTO;
-    public ProductDTO productDTO;
+    public CustomerDTO customer;
+    public ProductDTO product;
 
     public OrderDTO(long id, String city, String deliveryStatus, LocalDate orderDate ) {
         this.id = id;

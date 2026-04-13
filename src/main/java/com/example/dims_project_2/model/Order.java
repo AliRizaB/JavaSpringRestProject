@@ -48,7 +48,7 @@ public class Order {
     private Product product;
 
     public OrderDTO viewAsOrderDTO(){
-        return new OrderDTO(id, city, deliveryStatus, orderDate);
+        return new OrderDTO(id, city, deliveryStatus, orderDate, customer.viewAsCustomerDTO(), product.viewAsProductDTO());
     }
 
 }

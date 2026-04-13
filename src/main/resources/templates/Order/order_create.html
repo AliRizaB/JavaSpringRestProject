@@ -42,7 +42,7 @@
 
                     <div class="mb-3">
                         <label for="customerSelect" class="fs-5 form-label text-light" >Select Customer: </label>
-                        <select class="form-select" th:field="*{customerDTO}" required id="customerSelect">
+                        <select class="form-select" th:field="*{customer}" required id="customerSelect">
                             <option value=""  selected >Select a customer...</option>
                             <option th:each="customer :  ${customers}" th:value="${customer.id}" th:text="|${customer.id} -- ${customer.name}|"></option>
                         </select>
@@ -50,7 +50,7 @@
 
                     <div class="mb-3">
                         <label for="productSelect" class="fs-5 form-label text-light" >Select Product: </label>
-                        <select class="form-select" th:field="*{productDTO}" required id="productSelect">
+                        <select class="form-select" th:field="*{product}" required id="productSelect">
                             <option value="" selected >Select a product...</option>
                             <option th:each="product :  ${products}" th:value="${product.id}" th:text="|${product.id} -- ${product.name} -- ${product.price}|"></option>
                         </select>

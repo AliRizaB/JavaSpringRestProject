@@ -37,19 +37,26 @@ public class OrderController {
         model.addAllAttributes(lists);
 
         // Need to send an empty object for it to work.
-        model.addAttribute("order", new OrderDTO());
+        model.addAttribute("order", new Order());
 
         return "Order/order_create";
     }
 
-
     @PostMapping("/create")
     public String SubmitCreateOrderForm(@Valid @ModelAttribute("order") Order order, BindingResult result){
+        System.out.println("MADE TO THE POST CREATE");
+
         if(result.hasErrors()){
             return "Order/order_create";
         }
 
-        orderService.createOrder(saveModel(order));
+        try{
+            orderService.createOrder(findConnections(order));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("PAST THE CREATION TO THE POST CREATE");
 
         return "redirect:/order/read";
     }
@@ -57,7 +64,6 @@ public class OrderController {
     @GetMapping("/read")
     public String ShowReadOrder(Model model){
         List<OrderDTO> orders = orderService.getAllOrders();
-        System.out.println(orders);
         model.addAttribute("Orders", orders);
         return "Order/order_read";
     }
@@ -97,11 +103,13 @@ public class OrderController {
     }
 
     @PostMapping("/update/{id}")
-    public String UpdateOrder(@Valid @ModelAttribute("order") Order order, BindingResult result,@PathVariable Long id){
+    public String UpdateOrder(Model model, @Valid @ModelAttribute("order") Order order, BindingResult result,@PathVariable Long id){
         if(result.hasErrors()){
+            Map<String, ?> lists = getLists();
+            model.addAllAttributes(lists);
             return "Order/order_update";
         }
-        orderService.updateOrder(id, saveModel(order));
+        orderService.updateOrder(id, findConnections(order));
         return "redirect:/order/read";
     }
 
@@ -117,7 +125,8 @@ public class OrderController {
         return "Order/order_info";
     }
 
-    private Order saveModel(Order order){
+    private Order findConnections(Order order){
+
         CustomerDTO customerDTO = customerService.getCustomerById(order.getCustomer().getId());
         Customer customer = new Customer(
                 customerDTO.getId(),
@@ -126,7 +135,7 @@ public class OrderController {
                 customerDTO.getTelephone()
         );
         order.setCustomer(customer);
-        System.out.println(order.getCustomer());
+
         ProductDTO productDTO = productService.getProductById(order.getProduct().getId());
 
         Product product = new Product(
@@ -136,7 +145,6 @@ public class OrderController {
                 productDTO.getPrice()
         );
         order.setProduct(product);
-        System.out.println(order.getProduct());
 
         return order;
     }

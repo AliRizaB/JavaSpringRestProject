@@ -27,9 +27,9 @@
     <tr th:each="order : ${Orders}">
         <td th:text="${order.id}"></td>
 
-        <td th:text="${order.customerDTO?.id} + ' - ' + ${order.customerDTO?.name}"></td>
+        <td th:text="${order.customer?.id} + ' - ' + ${order.customer?.name}"></td>
 
-        <td th:text="${order.productDTO?.id} + ' - ' + ${order.productDTO?.name} + ' - ' + ${order.productDTO?.price}"></td>
+        <td th:text="${order.product?.id} + ' - ' + ${order.product?.name} + ' - ' + ${order.product?.price}"></td>
 
         <td th:text="${order.city}"></td>
         <td th:text="${order.orderDate}"></td>

@@ -7,6 +7,7 @@ import com.example.dims_project_2.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,45 +32,37 @@ public class UserController {
     @GetMapping("/read")
     public String allUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
-        return "user/user_read";
+        return "User/user_read";
     }
 
     @GetMapping("/info/{id}")
     public String getUser(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "user/user_info";
+        return "User/user_info";
     }
 
     // Create user
     @GetMapping("/create")
     public String addUser(Model model) {
         model.addAttribute("user", new User());
-        return "user/user_create";
+        return "User/user_create";
     }
 
     @PostMapping("/create")
-    public String userAdd(@ModelAttribute("user") User user, @RequestParam("img") MultipartFile file) {
+    public String userAdd(@ModelAttribute("user") User user, @RequestParam("img") MultipartFile file, BindingResult result) {
+        if(result.hasErrors()){
+            return "User/user_create";
+        }
         String fileName = file.getOriginalFilename();
         if (fileName.isEmpty() && user.getImageUrl().isEmpty()) {
             user.setImageUrl("nophoto.jpg");
         } else if (!fileName.isEmpty()) {
             // File upload
             user.setImageUrl(fileName);
-            String uploadDir = System.getProperty("user.dir") + "/images/";
+            String uploadDir = "src/main/resources/static/images/" + fileName;
             Path uploadPath = Paths.get(uploadDir);
-
-            if (!Files.exists(uploadPath)) {
-                try {
-                    Files.createDirectories(uploadPath);
-                } catch (IOException ex) {
-                    System.out.println("File saving error! " + ex);
-                }
-
-            }
-
             try {
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException ex) {
                 System.out.println("File saving error! " + ex);
             }
@@ -110,21 +103,10 @@ public class UserController {
         } else if (!fileName.isEmpty()) {
             // File upload
             user.setImageUrl(fileName);
+            String uploadDir = "src/main/resources/static/images/" + fileName;
 
-
-            String uploadDir = System.getProperty("user.dir") + "/images/";
             Path uploadPath = Paths.get(uploadDir);
-
-            if (!Files.exists(uploadPath)) {
-                try {
-                    Files.createDirectories(uploadPath);
-                } catch (IOException ex) {
-                    System.out.println("File saving error! " + ex);
-                }
-
-            }
             try {
-                Path filePath = uploadPath.resolve(fileName);
                 Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException ex) {
                 System.out.println("File saving error! " + ex);
@@ -159,10 +141,9 @@ public class UserController {
         UserDTO userDTO = userService.getUserById(id);
         if (!userDTO.getImageUrl().isEmpty()) {
             String fileName = userDTO.getImageUrl();
-            Path filePath = Paths.get(System.getProperty("user.dir") + "/images/" + fileName);
-
+            File file = new File("src/main/resources/static/images/"+  fileName);
             try {
-                boolean result = Files.deleteIfExists(filePath);
+                boolean result = Files.deleteIfExists(file.toPath());
             } catch (IOException e) {
                 e.printStackTrace();
             }

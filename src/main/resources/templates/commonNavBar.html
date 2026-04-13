@@ -52,7 +52,8 @@
                 </div>
 
 
-                <div class="fw-bold text-white" sec:authorize="isAnonymous()"><a class="dropdown-item" href="/Login/login">Login</a></div>
+                <div class="fw-bold text-white" sec:authorize="isAnonymous()"><a
+                        class="nav-link dropdown-toggle fw-bold text-white" href="/Login/login">Login</a></div>
                 <div class="fw-bold text-white" sec:authorize="isAuthenticated()">
 
                     <div class="nav-item dropdown">
@@ -61,9 +62,11 @@
                             Welcome: <span sec:authentication="name">Username</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><form th:action="@{/logout}" method="post">
-                                <button type="submit">Logout</button>
-                            </form></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post">
+                                    <button type="submit">Logout</button>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </div>

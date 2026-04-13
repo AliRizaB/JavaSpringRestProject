@@ -87,8 +87,8 @@ public class UserController {
     }
 
     // Update user
-    @GetMapping("/update/{id}")
-    public String updateUser(@PathVariable Long id, Model model) {
+    @GetMapping("/edit/{id}")
+    public String showUpdateUser(@PathVariable Long id, Model model) {
         try {
             UserDTO user = userService.getUserById(id);
             model.addAttribute("user", user);
@@ -96,12 +96,11 @@ public class UserController {
             model.addAttribute("error", e.getMessage());
             return "error_handling";
         }
-        return "User/user_update";
+        return "User/user_edit";
     }
 
-    @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam("img") MultipartFile file) {
-        Long id = user.getId();
+    @PostMapping("/edit/{id}")
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam("img") MultipartFile file, @PathVariable Long id) {
         if (id == null || id <= 0)
             throw new IllegalArgumentException("id is invalid");
 
@@ -134,7 +133,8 @@ public class UserController {
         if (user.getPassword() != null && !user.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        userService.updateUser(user.getId(), user);
+        user.setRole(Role.USER);
+        userService.updateUser(id, user);
         return "redirect:/user/read";
     }
 

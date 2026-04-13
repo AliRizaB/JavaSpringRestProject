@@ -44,12 +44,6 @@
                     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label for="passwordUser" class="fs-5 form-label text-light" >Password: </label>
-                    <input type="password" class="form-control" id="passwordUser" th:field="*{password}" placeholder="Password" readonly>
-                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
-                </div>
-
                 <div class="card-body text-center">
                     <button type="submit" class="btn btn-danger">DELETE</button>
                     <a th:href="@{/user/read}" class="btn btn-light">CANCEL</a>

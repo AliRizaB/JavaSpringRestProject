@@ -12,7 +12,7 @@
                         Customer
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/customer/create">Create</a></li>
+                        <li><a sec:authorize="isAuthenticated()" class="dropdown-item" href="/customer/create">Create</a></li>
                         <li><a class="dropdown-item" href="/customer/read">Read</a></li>
                     </ul>
                 </div>
@@ -23,7 +23,7 @@
                         Product
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/product/create">Create</a></li>
+                        <li><a sec:authorize="isAuthenticated()" class="dropdown-item" href="/product/create">Create</a></li>
                         <li><a class="dropdown-item" href="/product/read">Read</a></li>
                     </ul>
                 </div>
@@ -34,7 +34,7 @@
                         Order
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/order/create">Create</a></li>
+                        <li><a sec:authorize="isAuthenticated()" class="dropdown-item" href="/order/create">Create</a></li>
                         <li><a class="dropdown-item" href="/order/read">Read</a></li>
                     </ul>
                 </div>

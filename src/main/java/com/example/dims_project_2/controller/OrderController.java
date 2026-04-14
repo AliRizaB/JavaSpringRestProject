@@ -10,6 +10,7 @@ import com.example.dims_project_2.service.CustomerService;
 import com.example.dims_project_2.service.OrderService;
 import com.example.dims_project_2.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String ShowCreateOrderForm(Model model){
         Map<String, ?> lists = getLists();
         model.addAllAttributes(lists);
@@ -43,6 +45,7 @@ public class OrderController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String SubmitCreateOrderForm(@Valid @ModelAttribute("order") Order order, BindingResult result){
         System.out.println("MADE TO THE POST CREATE");
 
@@ -69,6 +72,7 @@ public class OrderController {
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String ShowDeleteOrder(Model model, @PathVariable Long id){
         try {
             OrderDTO order = orderService.getOrderById(id);
@@ -81,12 +85,14 @@ public class OrderController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String DeleteOrder(@PathVariable Long id){
         orderService.deleteOrder(id);
         return "redirect:/order/read";
     }
 
     @GetMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String ShowUpdateOrder(Model model, @PathVariable Long id){
         try {
             Map<String, ?> lists = getLists();
@@ -103,6 +109,7 @@ public class OrderController {
     }
 
     @PostMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String UpdateOrder(Model model, @Valid @ModelAttribute("order") Order order, BindingResult result,@PathVariable Long id){
         if(result.hasErrors()){
             Map<String, ?> lists = getLists();
@@ -114,6 +121,7 @@ public class OrderController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String GetOrderInfo(Model model ,@PathVariable Long id){
         try{
             OrderDTO order = orderService.getOrderById(id);

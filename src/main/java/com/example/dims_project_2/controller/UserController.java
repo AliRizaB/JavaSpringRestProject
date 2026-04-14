@@ -4,6 +4,7 @@ import com.example.dims_project_2.dtos.UserDTO;
 import com.example.dims_project_2.model.User;
 import com.example.dims_project_2.security.Role;
 import com.example.dims_project_2.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getUser(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         return "User/user_info";
@@ -43,12 +45,14 @@ public class UserController {
 
     // Create user
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String addUser(Model model) {
         model.addAttribute("user", new User());
         return "User/user_create";
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String userAdd(@ModelAttribute("user") User user, @RequestParam("img") MultipartFile file, BindingResult result) {
         if(result.hasErrors()){
             return "User/user_create";
@@ -82,6 +86,7 @@ public class UserController {
 
     // Update user
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String showUpdateUser(@PathVariable Long id, Model model) {
         try {
             UserDTO user = userService.getUserById(id);
@@ -94,14 +99,13 @@ public class UserController {
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateUser(@ModelAttribute("user") User user, @RequestParam("img") MultipartFile file, @PathVariable Long id) {
         if (id == null || id <= 0)
             throw new IllegalArgumentException("id is invalid");
 
         String fileName = file.getOriginalFilename();
-        if (fileName.isEmpty() && user.getImageUrl().isEmpty()) {
-            user.setImageUrl("nophoto.jpg");
-        } else if (!fileName.isEmpty()) {
+        if (!fileName.isEmpty()) {
             // File upload
             user.setImageUrl(fileName);
             String uploadDir = "src/main/resources/static/images/" + fileName;
@@ -123,6 +127,7 @@ public class UserController {
 
     // DELETE
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String showUserDelete(Model model, @PathVariable Long id) {
         try {
             UserDTO user = userService.getUserById(id);
@@ -135,6 +140,7 @@ public class UserController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String UserDelete(Model model, @PathVariable Long id) {
         if (id == null || id <= 0)
             throw new IllegalArgumentException("id is invalid");

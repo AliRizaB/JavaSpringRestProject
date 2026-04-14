@@ -3,9 +3,11 @@ package com.example.dims_project_2.security;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ import java.util.Collection;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityFilterConfig {
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -35,9 +38,16 @@ public class SecurityFilterConfig {
 
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/user/create", "/images/**", "/bootstrap/**", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/user/all").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/user/add", "/user/update/**", "/user/update").hasRole("ADMIN")
+                        .requestMatchers("/", "/login", "/access_denied",
+                                "/bootstrap/**", "/css/**", "/js/**", "/images/**",
+                                "/order/read", "/product/read", "/customer/read").permitAll()
+                        .requestMatchers("/order/read", "/order/info/**", "/product/read", "/product/info/**", "/customer/read", "/customer/info/**", "/user/read", "/user/info/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(
+                                "/customer/delete", "/customer/delete/**", "/customer/create", "/customer/update/**", "/customer/update",
+                                "/order/delete", "/order/delete/**", "/order/create", "/order/update/**", "/order/update"
+                                , "/product/delete", "/product/delete/**", "/product/create", "/product/update/**", "/product/update",
+                                "/user/delete", "/user/delete/**", "/user/create", "/user/update/**", "/user/update").hasRole("ADMIN")
+
                         .anyRequest().authenticated())
 
                 .formLogin(login -> login
@@ -49,12 +59,12 @@ public class SecurityFilterConfig {
                                 Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
                                 String role = authorities.iterator().next().getAuthority().substring(5);
-                                switch(role){
+                                switch (role) {
                                     case "USER":
                                         redirectStrategy.sendRedirect(request, response, "/");
                                         break;
                                     case "ADMIN":
-                                        redirectStrategy.sendRedirect(request, response, "/user/create");
+                                        redirectStrategy.sendRedirect(request, response, "/user/read");
                                         break;
                                     case "ANONYMOUS":
                                         redirectStrategy.sendRedirect(request, response, "/");
@@ -65,11 +75,17 @@ public class SecurityFilterConfig {
                         }))
 
                 .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/access-denied"))
+
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendRedirect("/access_denied");
+                        })
+
+                        .accessDeniedPage("/access_denied")
+                )
 
                 .logout(logout -> logout
                         .logoutUrl("/logout").logoutSuccessUrl("/").clearAuthentication(true)
-                        //.logoutUrl("/logout") //.clearAuthentication(true)
+
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true));
 
@@ -80,8 +96,6 @@ public class SecurityFilterConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 
 
 }

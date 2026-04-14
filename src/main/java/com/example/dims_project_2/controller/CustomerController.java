@@ -4,6 +4,7 @@ import com.example.dims_project_2.dtos.CustomerDTO;
 import com.example.dims_project_2.model.Customer;
 import com.example.dims_project_2.service.CustomerService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ public class CustomerController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String ShowCreateCustomerForm(Model model){
         // Need to send an empty object for it to work.
         model.addAttribute("customer", new CustomerDTO());
@@ -29,6 +31,7 @@ public class CustomerController {
 
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String SubmitCreateCustomerForm(@Valid @ModelAttribute("customer") Customer customer, BindingResult result){
         if(result.hasErrors()){
             return "Customer/customer_create";
@@ -45,6 +48,7 @@ public class CustomerController {
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String ShowDeleteCustomer(Model model, @PathVariable Long id){
         try {
             CustomerDTO customer = customerService.getCustomerById(id);
@@ -57,12 +61,14 @@ public class CustomerController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String DeleteCustomer(Model model, @PathVariable Long id){
         customerService.deleteCustomer(id);
         return "redirect:/customer/read";
     }
 
     @GetMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String ShowUpdateCustomer(Model model, @PathVariable Long id){
         try {
             CustomerDTO customer = customerService.getCustomerById(id);
@@ -75,6 +81,7 @@ public class CustomerController {
     }
 
     @PostMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String UpdateCustomer(@Valid @ModelAttribute("customer") Customer customer, BindingResult result,@PathVariable Long id){
         if(result.hasErrors()){
             return "Customer/customer_update";
@@ -84,6 +91,7 @@ public class CustomerController {
     }
 
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String GetCustomerInfo(Model model ,@PathVariable Long id){
         try{
             CustomerDTO customer = customerService.getCustomerById(id);

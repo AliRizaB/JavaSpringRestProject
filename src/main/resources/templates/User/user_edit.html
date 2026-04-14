@@ -19,6 +19,14 @@
                 <div th:if="${#fields.hasAnyErrors()}">
                     <p class="text-danger fs-6">Please fix the errors: </p>
                 </div>
+
+                <div class="mb-3">
+                    <img th:src="@{'/images/' + ${user.imageUrl}}"
+                         alt="User Profile Image"
+                         class="img-thumbnail"
+                         style="width: 100px; height: 100px; object-fit: cover;">
+                </div>
+
                 <input type="hidden" th:field="*{id}" />
 
                 <div class="mb-3">
@@ -35,7 +43,7 @@
 
                 <div class="mb-3">
                     <label for="imageUser" class="form-label text-light">User Image:</label>
-                    <input type="file" class="form-control" id="imageUser" name="img" accept="image/*" required>
+                    <input type="file" class="form-control" id="imageUser" name="img" accept="image/*">
                 </div>
 
                 <div class="mb-3">

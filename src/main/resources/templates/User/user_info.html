@@ -17,6 +17,13 @@
 
             <form th:object="${user}" >
                 <div class="mb-3">
+                    <img th:src="@{'/images/' + ${user.imageUrl}}"
+                         alt="User Profile Image"
+                         class="img-thumbnail"
+                         style="width: 100px; height: 100px; object-fit: cover;">
+                </div>
+
+                <div class="mb-3">
                     <label for="id" class="fs-5 form-label text-light" >ID: </label>
                     <input type="text" class="form-control" id="id" th:field="*{id}" readonly >
                 </div>
@@ -34,14 +41,14 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="imageUser" class="form-label text-light">User Image:</label>
-                    <input type="file" class="form-control" id="imageUser" name="img" accept="image/*" readonly>
-                </div>
-
-                <div class="mb-3">
                     <label for="username" class="fs-5 form-label text-light" >Username: </label>
                     <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Username" readonly>
                     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="role" class="fs-5 form-label text-light" >Role: </label>
+                    <input type="text" class="form-control" id="role" th:field="*{role}" placeholder="ROLE" readonly>
                 </div>
 
                 <div class="card-body text-center">

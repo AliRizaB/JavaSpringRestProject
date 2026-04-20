@@ -35,23 +35,34 @@ public class SecurityFilterConfig {
         http.csrf(csrf -> csrf.disable());
 
         http
-
-
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/access_denied",
-                                "/bootstrap/**", "/css/**", "/js/**", "/images/**",
-                                "/order/read", "/product/read", "/customer/read").permitAll()
-                        .requestMatchers("/order/read", "/order/info/**", "/product/read", "/product/info/**", "/customer/read", "/customer/info/**", "/user/read", "/user/info/**").hasAnyRole("USER", "ADMIN")
+                        // Public endpoints
                         .requestMatchers(
-                                "/customer/delete", "/customer/delete/**", "/customer/create", "/customer/update/**", "/customer/update",
-                                "/order/delete", "/order/delete/**", "/order/create", "/order/update/**", "/order/update"
-                                , "/product/delete", "/product/delete/**", "/product/create", "/product/update/**", "/product/update",
-                                "/user/delete", "/user/delete/**", "/user/create", "/user/update/**", "/user/update").hasRole("ADMIN")
+                                "/", "/login", "/access_denied", "/user/create",
+                                "/bootstrap/**", "/css/**", "/js/**", "/images/**"
+                        ).permitAll()
 
-                        .anyRequest().authenticated())
+                        // ADMIN-only write operations (delete, create, update)
+                        .requestMatchers(
+                                "/customer/create", "/customer/update", "/customer/update/**", "/customer/info/**", "/customer/delete/**",
+                                "/order/update",    "/order/update/**",    "/order/info/**",    "/order/delete/**",
+                                "/product/create",  "/product/update",  "/product/update/**",  "/product/info/**",  "/product/delete/**",
+                                "/user/update",     "/user/update/**", "/user/info/**" ,"/user/delete/**"
+                        ).hasRole("ADMIN")
+
+                        // USER + ADMIN read operations
+                        .requestMatchers(
+                                "/customer/read", "/order/read", "/product/read", "/user/read", "/order/create"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .anyRequest().authenticated()
+                )
+
+
 
                 .formLogin(login -> login
                         .loginPage("/login")
+                        .permitAll()
                         .successHandler(new AuthenticationSuccessHandler() {
                             @Override
                             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -77,11 +88,12 @@ public class SecurityFilterConfig {
                 .exceptionHandling(exception -> exception
 
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendRedirect("/access_denied");
+                            response.sendRedirect("/login");
                         })
 
                         .accessDeniedPage("/access_denied")
                 )
+
 
                 .logout(logout -> logout
                         .logoutUrl("/logout").logoutSuccessUrl("/").clearAuthentication(true)

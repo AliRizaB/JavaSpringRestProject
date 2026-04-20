@@ -12,7 +12,8 @@
                         Customer
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a sec:authorize="isAuthenticated()" class="dropdown-item" href="/customer/create">Create</a></li>
+                        <li><a sec:authorize="hasRole('ADMIN')" class="dropdown-item"
+                               href="/customer/create">Create</a></li>
                         <li><a class="dropdown-item" href="/customer/read">Read</a></li>
                     </ul>
                 </div>
@@ -23,7 +24,8 @@
                         Product
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a sec:authorize="isAuthenticated()" class="dropdown-item" href="/product/create">Create</a></li>
+                        <li><a sec:authorize="hasRole('ADMIN')" class="dropdown-item" href="/product/create">Create</a>
+                        </li>
                         <li><a class="dropdown-item" href="/product/read">Read</a></li>
                     </ul>
                 </div>
@@ -34,7 +36,8 @@
                         Order
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a sec:authorize="isAuthenticated()" class="dropdown-item" href="/order/create">Create</a></li>
+                        <li><a sec:authorize="isAuthenticated()" class="dropdown-item" href="/order/create">Create</a>
+                        </li>
                         <li><a class="dropdown-item" href="/order/read">Read</a></li>
                     </ul>
                 </div>
@@ -46,7 +49,7 @@
                         User
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/user/create">Register</a></li>
+                        <li><a sec:authorize="isAnonymous()" class="dropdown-item" href="/user/create">Register</a></li>
 
                         <li><a class="dropdown-item" href="/user/read" sec:authorize="isAuthenticated()">Read</a></li>
 
@@ -61,7 +64,9 @@
 
 
                 <div class="fw-bold text-white" sec:authorize="isAuthenticated()">
-                    Welcome: <span sec:authentication="name">Username</span>
+                    Welcome: <span sec:authentication="name">Username</span> <br>
+
+                    Role: <span sec:authentication="principal.authorities">Roles</span>
                 </div>
     </nav>
 </div>

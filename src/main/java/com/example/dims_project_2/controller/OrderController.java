@@ -10,7 +10,6 @@ import com.example.dims_project_2.service.CustomerService;
 import com.example.dims_project_2.service.OrderService;
 import com.example.dims_project_2.service.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,15 +25,14 @@ public class OrderController {
     private final CustomerService customerService;
     private final ProductService productService;
 
-    public OrderController(OrderService orderService, CustomerService customerService, ProductService productService){
+    public OrderController(OrderService orderService, CustomerService customerService, ProductService productService) {
         this.orderService = orderService;
-        this.customerService = customerService ;
+        this.customerService = customerService;
         this.productService = productService;
     }
 
     @GetMapping("/create")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String ShowCreateOrderForm(Model model){
+    public String ShowCreateOrderForm(Model model) {
         Map<String, ?> lists = getLists();
         model.addAllAttributes(lists);
 
@@ -45,18 +43,17 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String SubmitCreateOrderForm(@Valid @ModelAttribute("order") Order order, BindingResult result){
+    public String SubmitCreateOrderForm(@Valid @ModelAttribute("order") Order order, BindingResult result) {
         System.out.println("MADE TO THE POST CREATE");
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "Order/order_create";
         }
 
-        try{
+        try {
             orderService.createOrder(findConnections(order));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("PAST THE CREATION TO THE POST CREATE");
@@ -65,19 +62,18 @@ public class OrderController {
     }
 
     @GetMapping("/read")
-    public String ShowReadOrder(Model model){
+    public String ShowReadOrder(Model model) {
         List<OrderDTO> orders = orderService.getAllOrders();
         model.addAttribute("Orders", orders);
         return "Order/order_read";
     }
 
     @GetMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String ShowDeleteOrder(Model model, @PathVariable Long id){
+    public String ShowDeleteOrder(Model model, @PathVariable Long id) {
         try {
             OrderDTO order = orderService.getOrderById(id);
             model.addAttribute("order", order);
-        }catch (Exception e){
+        } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "error_handling";
         }
@@ -85,15 +81,13 @@ public class OrderController {
     }
 
     @PostMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String DeleteOrder(@PathVariable Long id){
+    public String DeleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
         return "redirect:/order/read";
     }
 
     @GetMapping("/update/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String ShowUpdateOrder(Model model, @PathVariable Long id){
+    public String ShowUpdateOrder(Model model, @PathVariable Long id) {
         try {
             Map<String, ?> lists = getLists();
             model.addAllAttributes(lists);
@@ -101,7 +95,7 @@ public class OrderController {
             OrderDTO order = orderService.getOrderById(id);
             model.addAttribute("order", order);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "error_handling";
         }
@@ -109,9 +103,8 @@ public class OrderController {
     }
 
     @PostMapping("/update/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String UpdateOrder(Model model, @Valid @ModelAttribute("order") Order order, BindingResult result,@PathVariable Long id){
-        if(result.hasErrors()){
+    public String UpdateOrder(Model model, @Valid @ModelAttribute("order") Order order, BindingResult result, @PathVariable Long id) {
+        if (result.hasErrors()) {
             Map<String, ?> lists = getLists();
             model.addAllAttributes(lists);
             return "Order/order_update";
@@ -121,19 +114,18 @@ public class OrderController {
     }
 
     @GetMapping("/info/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String GetOrderInfo(Model model ,@PathVariable Long id){
-        try{
+    public String GetOrderInfo(Model model, @PathVariable Long id) {
+        try {
             OrderDTO order = orderService.getOrderById(id);
             model.addAttribute("order", order);
-        }catch (Exception e){
+        } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "error_handling";
         }
         return "Order/order_info";
     }
 
-    private Order findConnections(Order order){
+    private Order findConnections(Order order) {
 
         CustomerDTO customerDTO = customerService.getCustomerById(order.getCustomer().getId());
         Customer customer = new Customer(

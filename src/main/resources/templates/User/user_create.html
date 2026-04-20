@@ -15,8 +15,6 @@
             <div class="card-body p-4">
                 <h3 class="card-title text-center mb-4 text-light">Create User</h3>
 
-
-
                 <form method="POST" th:action="@{/user/create}" th:object="${user}" enctype="multipart/form-data">
                     <div th:if="${#fields.hasAnyErrors()}">
                         <p class="text-danger fs-6">Please fix the errors: </p>

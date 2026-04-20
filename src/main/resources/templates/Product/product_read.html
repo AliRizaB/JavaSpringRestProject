@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -17,7 +17,7 @@
             <th style="width: 20%">Name</th>
             <th style="width: 30%">Supplier</th>
             <th style="width: 20%">Price</th>
-            <th style="width: 25%" class="text-center">FUNCTIONS</th>
+            <th sec:authorize="hasRole('ADMIN')" style="width: 25%" class="text-center">FUNCTIONS</th>
 
         </tr>
         </thead>
@@ -28,10 +28,14 @@
             <td th:text="${product.supplier}">AddressPlaceHolder</td>
             <td th:text="${product.price}">TelPlaceHolder</td>
 
-            <td class="text-center">
-                <a class="btn btn-danger btn-sm mx-1 " th:href="@{/product/delete/{id}(id=${product.id})}"> DELETE </a>
-                <a class="btn btn-primary btn-sm mx-1" th:href="@{/product/update/{id}(id=${product.id})}"> UPDATE </a>
-                <a class="btn btn-success btn-sm mx-1" th:href="@{/product/info/{id}(id=${product.id})}"> INFO </a>
+            <td sec:authorize="hasRole('ADMIN')" class="text-center">
+                <div class="d-flex justify-content-center gap-2">
+                    <a class="btn btn-danger btn-sm mx-1 " th:href="@{/product/delete/{id}(id=${product.id})}">
+                        DELETE </a>
+                    <a class="btn btn-primary btn-sm mx-1" th:href="@{/product/update/{id}(id=${product.id})}">
+                        UPDATE </a>
+                    <a class="btn btn-success btn-sm mx-1" th:href="@{/product/info/{id}(id=${product.id})}"> INFO </a>
+                </div>
             </td>
         </tr>
         </tbody>
